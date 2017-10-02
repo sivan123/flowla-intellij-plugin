@@ -13,26 +13,13 @@
   tokenTypeClass="com.plicku.flowla.plugin.psi.FlowlaTokenType"
 }
 
-flowFile ::= item_*
+simpleFile ::= item_*
 
-private item_ ::= (comment|steps|lines_to_keyword)
+private item_ ::= (steps|COMMENT|CRLF)
 
-comment ::= (comment_line white)*
-comment_line ::= space* '#' line_to_eol
 steps ::= step*
-step ::= comment step_keyword keyword_space line_to_eol (eol+ | eof) multiline_arg? white
-multiline_arg ::=  table | py_string
-py_string ::= open_py_string (!close_py_string .)* close_py_string
-open_py_string ::= space* '"""' space* eol
-close_py_string ::= eol space* '"""' white
-row ::= space* '|' cell+ eol
-cell ::= '[^\r\n|]'+ '|'
-table ::= row+
-step_keyword ::= 'Given' | 'When' | 'Then' | 'And' | 'But'
-lines_to_keyword ::= (!(eol space* reserved_words_and_symbols) .)*
-reserved_words_and_symbols ::= (step_keyword keyword_space) | table |  comment_line
-line_to_eol ::= (!eol .)*
-space ::= ' ' | '\t'
-eol ::= '\r'? '\n'
-white ::= (space | eol)*
-keyword_space ::= ' '
+step ::= space* step_keyword stepname? (eol+ | eof) multiline_arg? (space | eol)*
+step_keyword ::= ('Given ' | 'Then ' | 'For Each ' | 'But ' | 'And ')
+stepname ::= (!eol )*
+eol ::= 'regexp:\r?\n'
+space ::= (' ' | 'regex:\t')

@@ -1,8 +1,8 @@
 <idea-plugin>
-  <id>com.your.company.unique.plugin.id</id>
-  <name>Plugin display name here</name>
+  <id>Flowla</id>
+  <name>Flowla</name>
   <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <vendor email="sivaprasad.ps@gmail.com" url="http://www.yourcompany.com">Plicku</vendor>
 
   <description><![CDATA[
       Enter short description for your plugin here.<br>
@@ -28,7 +28,7 @@
     <!-- Add your extensions here -->
     <fileTypeFactory implementation="com.plicku.flowla.plugin.FlowlaFileTypeFactory"/>
     <lang.parserDefinition language="Flowla" implementationClass="com.plicku.flowla.plugin.FlowlaParserDefinition"/>
-    <lang.syntaxHighlighterFactory key="Flowla" implementationClass="com.plicku.flowla.plugin.FlowlaSyntaxHighlighterFactory"></lang.syntaxHighlighterFactory>
+    <lang.syntaxHighlighterFactory language="Flowla" implementationClass="com.plicku.flowla.plugin.FlowlaSyntaxHighlighterFactory"></lang.syntaxHighlighterFactory>
   </extensions>
 
   <actions>

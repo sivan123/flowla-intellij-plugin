@@ -8,24 +8,15 @@ import com.intellij.psi.PsiElement;
 public interface FlowlaStep extends PsiElement {
 
   @NotNull
-  FlowlaComment getComment();
-
-  @NotNull
   List<FlowlaEol> getEolList();
 
   @NotNull
-  FlowlaKeywordSpace getKeywordSpace();
-
-  @NotNull
-  FlowlaLineToEol getLineToEol();
-
-  @Nullable
-  FlowlaMultilineArg getMultilineArg();
+  List<FlowlaSpace> getSpaceList();
 
   @NotNull
   FlowlaStepKeyword getStepKeyword();
 
-  @NotNull
-  FlowlaWhite getWhite();
+  @Nullable
+  FlowlaStepname getStepname();
 
 }

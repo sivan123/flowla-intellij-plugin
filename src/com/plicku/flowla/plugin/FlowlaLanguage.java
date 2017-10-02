@@ -7,6 +7,6 @@ public class FlowlaLanguage extends Language {
     public static final FlowlaLanguage INSTANCE = new FlowlaLanguage();
 
     private FlowlaLanguage() {
-        super("Simple");
+        super("Flowla");
     }
 }

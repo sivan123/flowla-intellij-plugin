@@ -7,55 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public class FlowlaVisitor extends PsiElementVisitor {
 
-  public void visitCell(@NotNull FlowlaCell o) {
-    visitPsiElement(o);
-  }
-
-  public void visitClosePyString(@NotNull FlowlaClosePyString o) {
-    visitPsiElement(o);
-  }
-
-  public void visitComment(@NotNull FlowlaComment o) {
-    visitPsiElement(o);
-  }
-
-  public void visitCommentLine(@NotNull FlowlaCommentLine o) {
-    visitPsiElement(o);
-  }
-
   public void visitEol(@NotNull FlowlaEol o) {
-    visitPsiElement(o);
-  }
-
-  public void visitKeywordSpace(@NotNull FlowlaKeywordSpace o) {
-    visitPsiElement(o);
-  }
-
-  public void visitLineToEol(@NotNull FlowlaLineToEol o) {
-    visitPsiElement(o);
-  }
-
-  public void visitLinesToKeyword(@NotNull FlowlaLinesToKeyword o) {
-    visitPsiElement(o);
-  }
-
-  public void visitMultilineArg(@NotNull FlowlaMultilineArg o) {
-    visitPsiElement(o);
-  }
-
-  public void visitOpenPyString(@NotNull FlowlaOpenPyString o) {
-    visitPsiElement(o);
-  }
-
-  public void visitPyString(@NotNull FlowlaPyString o) {
-    visitPsiElement(o);
-  }
-
-  public void visitReservedWordsAndSymbols(@NotNull FlowlaReservedWordsAndSymbols o) {
-    visitPsiElement(o);
-  }
-
-  public void visitRow(@NotNull FlowlaRow o) {
     visitPsiElement(o);
   }
 
@@ -71,15 +23,11 @@ public class FlowlaVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitStepname(@NotNull FlowlaStepname o) {
+    visitPsiElement(o);
+  }
+
   public void visitSteps(@NotNull FlowlaSteps o) {
-    visitPsiElement(o);
-  }
-
-  public void visitTable(@NotNull FlowlaTable o) {
-    visitPsiElement(o);
-  }
-
-  public void visitWhite(@NotNull FlowlaWhite o) {
     visitPsiElement(o);
   }
 

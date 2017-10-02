@@ -28,32 +28,14 @@ public class FlowlaStepImpl extends ASTWrapperPsiElement implements FlowlaStep {
 
   @Override
   @NotNull
-  public FlowlaComment getComment() {
-    return findNotNullChildByClass(FlowlaComment.class);
-  }
-
-  @Override
-  @NotNull
   public List<FlowlaEol> getEolList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, FlowlaEol.class);
   }
 
   @Override
   @NotNull
-  public FlowlaKeywordSpace getKeywordSpace() {
-    return findNotNullChildByClass(FlowlaKeywordSpace.class);
-  }
-
-  @Override
-  @NotNull
-  public FlowlaLineToEol getLineToEol() {
-    return findNotNullChildByClass(FlowlaLineToEol.class);
-  }
-
-  @Override
-  @Nullable
-  public FlowlaMultilineArg getMultilineArg() {
-    return findChildByClass(FlowlaMultilineArg.class);
+  public List<FlowlaSpace> getSpaceList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, FlowlaSpace.class);
   }
 
   @Override
@@ -63,9 +45,9 @@ public class FlowlaStepImpl extends ASTWrapperPsiElement implements FlowlaStep {
   }
 
   @Override
-  @NotNull
-  public FlowlaWhite getWhite() {
-    return findNotNullChildByClass(FlowlaWhite.class);
+  @Nullable
+  public FlowlaStepname getStepname() {
+    return findChildByClass(FlowlaStepname.class);
   }
 
 }

@@ -4,10 +4,8 @@ package com.plicku.flowla.plugin.grammer;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-
-import static com.intellij.psi.TokenType.BAD_CHARACTER;
-import static com.intellij.psi.TokenType.WHITE_SPACE;
-import static com.plicku.flowla.plugin.psi.FlowlaTypes.*;
+import com.plicku.flowla.plugin.psi.FlowlaTypes;
+import com.intellij.psi.TokenType;
 
 
 /**
@@ -25,6 +23,7 @@ public class FlowlaLexer implements FlexLexer {
 
   /** lexical states */
   public static final int YYINITIAL = 0;
+  public static final int STEP = 2;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -33,30 +32,30 @@ public class FlowlaLexer implements FlexLexer {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = { 
-     0, 0
+     0,  0,  1, 1
   };
 
   /** 
    * Translates characters to character classes
-   * Chosen bits are [7, 7, 7]
-   * Total runtime size is 1928 bytes
+   * Chosen bits are [9, 6, 6]
+   * Total runtime size is 1568 bytes
    */
   public static int ZZ_CMAP(int ch) {
-    return ZZ_CMAP_A[(ZZ_CMAP_Y[ZZ_CMAP_Z[ch>>14]|((ch>>7)&0x7f)]<<7)|(ch&0x7f)];
+    return ZZ_CMAP_A[(ZZ_CMAP_Y[ZZ_CMAP_Z[ch>>12]|((ch>>6)&0x3f)]<<6)|(ch&0x3f)];
   }
 
-  /* The ZZ_CMAP_Z table has 68 entries */
+  /* The ZZ_CMAP_Z table has 272 entries */
   static final char ZZ_CMAP_Z[] = zzUnpackCMap(
-    "\1\0\103\200");
+    "\1\0\1\100\1\200\u010d\100");
 
-  /* The ZZ_CMAP_Y table has 256 entries */
+  /* The ZZ_CMAP_Y table has 192 entries */
   static final char ZZ_CMAP_Y[] = zzUnpackCMap(
-    "\1\0\1\1\53\2\1\3\22\2\1\4\37\2\1\3\237\2");
+    "\1\0\1\1\1\2\175\3\1\4\77\3");
 
-  /* The ZZ_CMAP_A table has 640 entries */
+  /* The ZZ_CMAP_A table has 320 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\5\1\22\0\1\1\104\0\1\2\1\4\10\0\1\3\25\0\1\1\32\0\1\1\337\0\1\1\177"+
-    "\0\13\1\35\0\2\1\5\0\1\1\57\0\1\1\40\0");
+    "\11\0\1\3\1\2\2\1\1\2\22\0\1\4\2\0\1\5\43\0\1\6\14\0\1\13\2\0\1\13\15\0\1"+
+    "\11\2\0\1\14\1\7\4\0\1\12\7\0\1\10\16\0\1\1\242\0\2\1\26\0");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -64,10 +63,10 @@ public class FlowlaLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2\1\1\1\0\1\3";
+    "\2\0\1\1\1\2\6\0\1\3\1\0\1\4";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[6];
+    int [] result = new int[13];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -92,10 +91,11 @@ public class FlowlaLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\5\0\12\0\17\0\24\0\5";
+    "\0\0\0\15\0\32\0\47\0\64\0\101\0\116\0\133"+
+    "\0\150\0\165\0\202\0\202\0\217";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[6];
+    int [] result = new int[13];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -118,11 +118,14 @@ public class FlowlaLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\2\1\3\1\4\2\2\6\0\1\3\6\0\1\5"+
-    "\5\0\1\6";
+    "\1\0\4\3\1\4\10\0\4\3\1\0\1\5\4\0"+
+    "\1\6\2\0\4\3\10\0\2\4\1\0\12\4\7\0"+
+    "\1\7\21\0\1\10\10\0\1\10\15\0\1\11\15\0"+
+    "\1\12\6\0\1\13\10\0\1\14\1\0\1\15\12\14"+
+    "\15\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[25];
+    int [] result = new int[156];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -160,10 +163,10 @@ public class FlowlaLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\11\2\1\1\0\1\11";
+    "\2\0\2\1\6\0\1\1\1\0\1\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[6];
+    int [] result = new int[13];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -217,11 +220,6 @@ public class FlowlaLexer implements FlexLexer {
 
   /** denotes if the user-EOF-code has already been executed */
   private boolean zzEOFDone;
-
-  /* user code: */
-  public FlowlaLexer() {
-    this((java.io.Reader)null);
-  }
 
 
   /**
@@ -379,6 +377,18 @@ public class FlowlaLexer implements FlexLexer {
 
 
   /**
+   * Contains user EOF-code, which will be executed exactly once,
+   * when the end of file is reached
+   */
+  private void zzDoEOF() {
+    if (!zzEOFDone) {
+      zzEOFDone = true;
+    
+    }
+  }
+
+
+  /**
    * Resumes scanning until the next regular expression is matched,
    * the end of input is encountered or an I/O-Error occurs.
    *
@@ -464,22 +474,27 @@ public class FlowlaLexer implements FlexLexer {
 
       if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
         zzAtEOF = true;
+        zzDoEOF();
         return null;
       }
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { return BAD_CHARACTER;
-            }
-          case 4: break;
-          case 2: 
-            { return WHITE_SPACE;
+            { yybegin(YYINITIAL); return TokenType.WHITE_SPACE;
             }
           case 5: break;
-          case 3: 
-            { return EOF;
+          case 2: 
+            { yybegin(YYINITIAL); return FlowlaTypes.COMMENT;
             }
           case 6: break;
+          case 3: 
+            { return FlowlaTypes.STEP_KEYWORD;
+            }
+          case 7: break;
+          case 4: 
+            { return FlowlaTypes.STEPNAME;
+            }
+          case 8: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

@@ -2,37 +2,40 @@ package com.plicku.flowla.plugin.grammer;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-
-import static com.intellij.psi.TokenType.BAD_CHARACTER;
-import static com.intellij.psi.TokenType.WHITE_SPACE;
-import static com.plicku.flowla.plugin.psi.FlowlaTypes.*;
+import com.plicku.flowla.plugin.psi.FlowlaTypes;
+import com.intellij.psi.TokenType;
 
 %%
-
-%{
-  public FlowlaLexer() {
-    this((java.io.Reader)null);
-  }
-%}
 
 %public
 %class FlowlaLexer
 %implements FlexLexer
+%unicode
 %function advance
 %type IElementType
-%unicode
+%eof{  return;
+%eof}
 
-EOL=\R
-WHITE_SPACE=\s+
-
+CRLF=\R
+WHITE_SPACE=[\ \n\t\f]
+FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
+VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
+END_OF_LINE_COMMENT=("#")[^\r\n]*
+SEPARATOR=[:=]
+STEP_KEYWORD="Given "|"Then "|"When "
+STEPNAME={STEP_KEYWORD}.*?[\n\r]
+STEP={STEP_KEYWORD}{STEPNAME}
+%state STEP
 
 %%
-<YYINITIAL> {
-  {WHITE_SPACE}      { return WHITE_SPACE; }
 
-  "eof"              { return EOF; }
+<YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return FlowlaTypes.COMMENT; }
 
+//<YYINITIAL> {STEP_KEYWORD}                                { yystate(STEP); }
+
+<STEP> {
+    {STEP_KEYWORD}                                      {return FlowlaTypes.STEP_KEYWORD;}
+    {STEPNAME}                                          {return FlowlaTypes.STEPNAME;}
 
 }
-
-[^] { return BAD_CHARACTER; }
+({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }

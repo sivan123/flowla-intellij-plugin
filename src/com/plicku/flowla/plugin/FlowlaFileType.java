@@ -15,19 +15,19 @@ public class FlowlaFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getName() {
-        return "Simple file";
+        return "Flowla file";
     }
 
     @NotNull
     @Override
     public String getDescription() {
-        return "Simple language file";
+        return "Flowla language file";
     }
 
     @NotNull
     @Override
     public String getDefaultExtension() {
-        return "simple";
+        return "flowla";
     }
 
     @Nullable
