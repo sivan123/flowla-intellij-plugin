@@ -26,28 +26,4 @@ public class FlowlaStepImpl extends ASTWrapperPsiElement implements FlowlaStep {
     else super.accept(visitor);
   }
 
-  @Override
-  @NotNull
-  public List<FlowlaEol> getEolList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, FlowlaEol.class);
-  }
-
-  @Override
-  @NotNull
-  public List<FlowlaSpace> getSpaceList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, FlowlaSpace.class);
-  }
-
-  @Override
-  @NotNull
-  public FlowlaStepKeyword getStepKeyword() {
-    return findNotNullChildByClass(FlowlaStepKeyword.class);
-  }
-
-  @Override
-  @Nullable
-  public FlowlaStepname getStepname() {
-    return findChildByClass(FlowlaStepname.class);
-  }
-
 }

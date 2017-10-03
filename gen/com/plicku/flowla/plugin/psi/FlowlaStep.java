@@ -7,16 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface FlowlaStep extends PsiElement {
 
-  @NotNull
-  List<FlowlaEol> getEolList();
-
-  @NotNull
-  List<FlowlaSpace> getSpaceList();
-
-  @NotNull
-  FlowlaStepKeyword getStepKeyword();
-
-  @Nullable
-  FlowlaStepname getStepname();
-
 }

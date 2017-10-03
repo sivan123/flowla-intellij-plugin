@@ -13,13 +13,10 @@
   tokenTypeClass="com.plicku.flowla.plugin.psi.FlowlaTokenType"
 }
 
-simpleFile ::= item_*
+flowlaFile ::= item_*
 
-private item_ ::= (steps|COMMENT|CRLF)
+private item_ ::= (steps|COMMENT|CRLF|[""])
 
 steps ::= step*
-step ::= space* step_keyword stepname? (eol+ | eof) multiline_arg? (space | eol)*
-step_keyword ::= ('Given ' | 'Then ' | 'For Each ' | 'But ' | 'And ')
-stepname ::= (!eol )*
-eol ::= 'regexp:\r?\n'
-space ::= (' ' | 'regex:\t')
+step ::= [""]step_keyword [stepname] [multiline_arg]
+

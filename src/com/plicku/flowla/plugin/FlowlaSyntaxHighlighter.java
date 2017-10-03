@@ -42,6 +42,7 @@ public class FlowlaSyntaxHighlighter extends SyntaxHighlighterBase{
     @NotNull
     @Override
     public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
+
         if (tokenType.equals(FlowlaTypes.STEP_KEYWORD)) {
             return STEP_KEYWORDS;
         } else if (tokenType.equals(FlowlaTypes.STEPNAME)) {
