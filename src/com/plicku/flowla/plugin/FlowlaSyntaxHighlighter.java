@@ -12,6 +12,7 @@ import com.plicku.flowla.plugin.psi.FlowlaTypes;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
+import static com.plicku.flowla.plugin.psi.FlowlaTypes.*;
 
 public class FlowlaSyntaxHighlighter extends SyntaxHighlighterBase{
     public static final TextAttributesKey SEPARATOR =
@@ -43,7 +44,7 @@ public class FlowlaSyntaxHighlighter extends SyntaxHighlighterBase{
     @Override
     public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
 
-        if (tokenType.equals(FlowlaTypes.STEP_KEYWORD)) {
+        if (tokenType.equals(STEP_KEYWORD)) {
             return STEP_KEYWORDS;
         } else if (tokenType.equals(FlowlaTypes.STEPNAME)) {
             return NAME;

@@ -37,19 +37,44 @@ STEP_KEYWORD={GIVEN_KEYWORD}|{WHEN_KEYWORD}|{THEN_KEYWORD}
                 |{BUT_KEYWORD}|{AND_KEYWORD}|{IF_KEYWORD}|{ELSEIF_KEYWORD}
                 |{ENDIF_KEYWORD}|{OTHERWISE_KEYWORD}|{FOREACH_KEYWORD}|{REEATFOR_KEYWORD}|{REPEAT_WHILE_KEYWORD}
 
+PROCESSING_KEWORDS={GIVEN_KEYWORD}|{WHEN_KEYWORD}|{THEN_KEYWORD}|{BUT_KEYWORD}|{AND_KEYWORD}
 
 STEPNAME=[^\r\n]*
-//#STEP={STEP_KEYWORD}{STEPNAME}
-%state STEP
-
+//STEPDATA=( [^*] | \*+ [^/*] )*
+STEPDATA=( [^*] | \*+ [^/*] )*{STEP_KEYWORD}
+%state PROCESS_STEP
+%state IF_STEP
+%state FOR_STEP
+%state ELSE_IF_STEP
+%state OTHERWISE_STEP
 %%
 
 <YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return FlowlaTypes.COMMENT; }
-<YYINITIAL> {STEP_KEYWORD}                                  { yybegin(STEP); return FlowlaTypes.STEP_KEYWORD; }
-
-<STEP> {
+<YYINITIAL> {PROCESSING_KEWORDS}                                  { yybegin(PROCESS_STEP); return FlowlaTypes.STEP_KEYWORD; }
+<PROCESS_STEP> {
         {STEPNAME}                                          {return FlowlaTypes.STEPNAME;}
+        {STEPDATA}                                          {return FlowlaTypes.MULTILINE_ARG;}
 }
+<YYINITIAL> {IF_KEYWORD}                                  { yybegin(IF_STEP); return FlowlaTypes.STEP_KEYWORD; }
+<IF_STEP>{
+        {STEPNAME}                                          {return FlowlaTypes.STEPNAME;}
+        {STEPDATA}                                          {return FlowlaTypes.MULTILINE_ARG;}
+        {ELSEIF_KEYWORD}                                    { yybegin(ELSE_IF_STEP); return FlowlaTypes.STEP_KEYWORD; }
+        {OTHERWISE_KEYWORD}                                    { yybegin(OTHERWISE_STEP); return FlowlaTypes.STEP_KEYWORD; }
+}
+<ELSE_IF_STEP>{
+        {STEPNAME}                                          {return FlowlaTypes.STEPNAME;}
+        {STEPDATA}                                          {return FlowlaTypes.MULTILINE_ARG;}
+        {OTHERWISE_KEYWORD}                                 { yybegin(OTHERWISE_STEP); return FlowlaTypes.STEP_KEYWORD; }
+}
+<OTHERWISE_STEP>{
+        {STEPNAME}                                          {return FlowlaTypes.STEPNAME;}
+        {STEPDATA}                                          {return FlowlaTypes.MULTILINE_ARG;}
+        {OTHERWISE_KEYWORD}                                 { yybegin(OTHERWISE_STEP); return FlowlaTypes.STEP_KEYWORD; }
+}
+
+
+
 ({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 
 .                                                           { return TokenType.BAD_CHARACTER; }

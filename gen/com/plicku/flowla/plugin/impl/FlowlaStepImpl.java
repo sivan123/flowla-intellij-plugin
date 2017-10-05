@@ -26,4 +26,52 @@ public class FlowlaStepImpl extends ASTWrapperPsiElement implements FlowlaStep {
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public FlowlaAndStep getAndStep() {
+    return findChildByClass(FlowlaAndStep.class);
+  }
+
+  @Override
+  @Nullable
+  public FlowlaButStep getButStep() {
+    return findChildByClass(FlowlaButStep.class);
+  }
+
+  @Override
+  @Nullable
+  public FlowlaForeachStep getForeachStep() {
+    return findChildByClass(FlowlaForeachStep.class);
+  }
+
+  @Override
+  @Nullable
+  public FlowlaForwhileStep getForwhileStep() {
+    return findChildByClass(FlowlaForwhileStep.class);
+  }
+
+  @Override
+  @Nullable
+  public FlowlaGivenStep getGivenStep() {
+    return findChildByClass(FlowlaGivenStep.class);
+  }
+
+  @Override
+  @Nullable
+  public FlowlaIfStep getIfStep() {
+    return findChildByClass(FlowlaIfStep.class);
+  }
+
+  @Override
+  @Nullable
+  public FlowlaThenStep getThenStep() {
+    return findChildByClass(FlowlaThenStep.class);
+  }
+
+  @Override
+  @Nullable
+  public FlowlaWhenStep getWhenStep() {
+    return findChildByClass(FlowlaWhenStep.class);
+  }
+
 }

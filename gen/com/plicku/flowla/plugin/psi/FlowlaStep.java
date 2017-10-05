@@ -7,4 +7,28 @@ import com.intellij.psi.PsiElement;
 
 public interface FlowlaStep extends PsiElement {
 
+  @Nullable
+  FlowlaAndStep getAndStep();
+
+  @Nullable
+  FlowlaButStep getButStep();
+
+  @Nullable
+  FlowlaForeachStep getForeachStep();
+
+  @Nullable
+  FlowlaForwhileStep getForwhileStep();
+
+  @Nullable
+  FlowlaGivenStep getGivenStep();
+
+  @Nullable
+  FlowlaIfStep getIfStep();
+
+  @Nullable
+  FlowlaThenStep getThenStep();
+
+  @Nullable
+  FlowlaWhenStep getWhenStep();
+
 }
