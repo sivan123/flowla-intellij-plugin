@@ -349,7 +349,7 @@ public class FlowlaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // steps|COMMENT|CRLF|[""]
+  // steps|COMMENT|CRLF
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
@@ -357,16 +357,8 @@ public class FlowlaParser implements PsiParser, LightPsiParser {
     r = steps(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
-    if (!r) r = item__3(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
-  }
-
-  // [""]
-  private static boolean item__3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "item__3")) return false;
-    consumeToken(b, "");
-    return true;
   }
 
   /* ********************************************************** */

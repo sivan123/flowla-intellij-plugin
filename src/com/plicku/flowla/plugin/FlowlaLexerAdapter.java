@@ -1,7 +1,7 @@
 package com.plicku.flowla.plugin;
 
 import com.intellij.lexer.FlexAdapter;
-import com.plicku.flowla.plugin.grammer.FlowlaLexer;
+import com.plicku.flowla.plugin.lexer.FlowlaLexer;
 
 
 import java.io.Reader;

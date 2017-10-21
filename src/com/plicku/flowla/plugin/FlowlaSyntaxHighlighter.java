@@ -44,13 +44,14 @@ public class FlowlaSyntaxHighlighter extends SyntaxHighlighterBase{
     @Override
     public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
 
-        if (tokenType.equals(STEP_KEYWORD)) {
+
+        if (GIVEN_KW.equals(tokenType)||THEN_KW.equals(tokenType)||IF_KW.equals(tokenType)||FOREACH_KW.equals(tokenType)) {
             return STEP_KEYWORDS;
-        } else if (tokenType.equals(FlowlaTypes.STEPNAME)) {
+        } else if (STEP_NAME.equals(tokenType)) {
             return NAME;
-        } else if (tokenType.equals(FlowlaTypes.COMMENT)) {
+        } else if (COMMENT.equals(tokenType)) {
             return COMMENT_KEYS;
-        } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
+        } else if (BAD_CHARACTER.equals(tokenType)) {
             return BAD_CHAR_KEYS;
         } else {
             return EMPTY_KEYS;

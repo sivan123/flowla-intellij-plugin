@@ -15,7 +15,7 @@
 
 flowlaFile ::= item_*
 
-private item_ ::= (steps|COMMENT|CRLF|[""])
+private item_ ::= (steps|COMMENT|CRLF)
 
 steps ::= step*
 step ::= (given_step|then_step|when_step|and_step|but_step|if_step|foreach_step|forwhile_step)
