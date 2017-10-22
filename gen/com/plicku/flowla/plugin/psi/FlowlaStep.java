@@ -17,13 +17,16 @@ public interface FlowlaStep extends PsiElement {
   FlowlaForeachStep getForeachStep();
 
   @Nullable
-  FlowlaForwhileStep getForwhileStep();
-
-  @Nullable
   FlowlaGivenStep getGivenStep();
 
   @Nullable
   FlowlaIfStep getIfStep();
+
+  @Nullable
+  FlowlaRepeatFor getRepeatFor();
+
+  @Nullable
+  FlowlaRepeatWhile getRepeatWhile();
 
   @Nullable
   FlowlaThenStep getThenStep();

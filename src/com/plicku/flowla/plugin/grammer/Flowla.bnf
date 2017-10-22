@@ -18,7 +18,7 @@ flowlaFile ::= item_*
 private item_ ::= (steps|COMMENT|CRLF)
 
 steps ::= step*
-step ::= (given_step|then_step|when_step|and_step|but_step|if_step|foreach_step|forwhile_step)
+step ::= (given_step|then_step|when_step|and_step|but_step|if_step|foreach_step|repeat_for|repeat_while)
 given_step ::= given_kw stepname [multiline_arg]
 then_step ::= then_kw stepname [multiline_arg]
 when_step ::= when_kw stepname [multiline_arg]
@@ -26,12 +26,13 @@ and_step ::= and_kw stepname [multiline_arg]
 but_step ::= but_kw stepname [multiline_arg]
 if_step ::=  if_kw stepname [multiline_arg]
                 [step*]
-             [elseif_step*]
-             [otherwise_step]
+                [elseif_step*]
+                [otherwise_step]
              endif_kw
 elseif_step ::= elseif_kw stepname [multiline_arg] [step*]
 otherwise_step ::= otherwise_kw [step+]
 
 foreach_step ::= foreach_kw stepname [multiline_arg] [step+] endfor_kw
-forwhile_step ::= forwhile_kw stepname [multiline_arg] [step+] endfor_kw
+repeat_for ::= repeatefor_kw stepname [multiline_arg] [step+] endrepeat_kw
+repeat_while ::= repeatwhile_kw stepname [multiline_arg] [step+] endrepeat_kw
 step_keyword ::=(given_kw | then_kw |when_kw |and_kw |but_kw|if_kw|endif_kw|elseif_kw|otherwise_kw|foreach_kw|forwhile_kw)

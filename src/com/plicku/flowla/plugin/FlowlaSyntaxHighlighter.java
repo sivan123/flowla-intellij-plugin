@@ -8,6 +8,7 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 
+import com.plicku.flowla.plugin.lexer.FlowlaLexerUtil;
 import com.plicku.flowla.plugin.psi.FlowlaTypes;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,14 +21,17 @@ public class FlowlaSyntaxHighlighter extends SyntaxHighlighterBase{
     public static final TextAttributesKey KEY =
             createTextAttributesKey("STEP_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey STEP_NAME =
-            createTextAttributesKey("STEP_NAME", DefaultLanguageHighlighterColors.STRING);
+            createTextAttributesKey("STEP_NAME", DefaultLanguageHighlighterColors.INSTANCE_METHOD);
+    public static final TextAttributesKey STEP_DATA =
+            createTextAttributesKey("STEP_DATA", DefaultLanguageHighlighterColors.STRING);
+
     public static final TextAttributesKey COMMENT =
             createTextAttributesKey("SIMPLE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey BAD_CHARACTER =
             createTextAttributesKey("SIMPLE_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
-//    private static final TextAttributesKey[] SEPARATOR_KEYS = new TextAttributesKey[]{SEPARATOR};
+    private static final TextAttributesKey[] STEP_DATA_KEYS = new TextAttributesKey[]{STEP_DATA};
     private static final TextAttributesKey[] STEP_KEYWORDS = new TextAttributesKey[]{KEY};
     private static final TextAttributesKey[] NAME = new TextAttributesKey[]{STEP_NAME};
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
@@ -45,7 +49,7 @@ public class FlowlaSyntaxHighlighter extends SyntaxHighlighterBase{
     public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
 
 
-        if (GIVEN_KW.equals(tokenType)||THEN_KW.equals(tokenType)||IF_KW.equals(tokenType)||FOREACH_KW.equals(tokenType)) {
+        if (FlowlaLexerUtil.isKeyWord(tokenType)) {
             return STEP_KEYWORDS;
         } else if (STEP_NAME.equals(tokenType)) {
             return NAME;

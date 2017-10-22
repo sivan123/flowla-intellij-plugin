@@ -46,12 +46,6 @@ public class FlowlaStepImpl extends ASTWrapperPsiElement implements FlowlaStep {
 
   @Override
   @Nullable
-  public FlowlaForwhileStep getForwhileStep() {
-    return findChildByClass(FlowlaForwhileStep.class);
-  }
-
-  @Override
-  @Nullable
   public FlowlaGivenStep getGivenStep() {
     return findChildByClass(FlowlaGivenStep.class);
   }
@@ -60,6 +54,18 @@ public class FlowlaStepImpl extends ASTWrapperPsiElement implements FlowlaStep {
   @Nullable
   public FlowlaIfStep getIfStep() {
     return findChildByClass(FlowlaIfStep.class);
+  }
+
+  @Override
+  @Nullable
+  public FlowlaRepeatFor getRepeatFor() {
+    return findChildByClass(FlowlaRepeatFor.class);
+  }
+
+  @Override
+  @Nullable
+  public FlowlaRepeatWhile getRepeatWhile() {
+    return findChildByClass(FlowlaRepeatWhile.class);
   }
 
   @Override

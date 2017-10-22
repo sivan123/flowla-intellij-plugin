@@ -35,9 +35,6 @@ public class FlowlaParser implements PsiParser, LightPsiParser {
     else if (t == FOREACH_STEP) {
       r = foreach_step(b, 0);
     }
-    else if (t == FORWHILE_STEP) {
-      r = forwhile_step(b, 0);
-    }
     else if (t == GIVEN_STEP) {
       r = given_step(b, 0);
     }
@@ -46,6 +43,12 @@ public class FlowlaParser implements PsiParser, LightPsiParser {
     }
     else if (t == OTHERWISE_STEP) {
       r = otherwise_step(b, 0);
+    }
+    else if (t == REPEAT_FOR) {
+      r = repeat_for(b, 0);
+    }
+    else if (t == REPEAT_WHILE) {
+      r = repeat_while(b, 0);
     }
     else if (t == STEP) {
       r = step(b, 0);
@@ -211,51 +214,6 @@ public class FlowlaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // forwhile_kw stepname [multiline_arg] [step+] endfor_kw
-  public static boolean forwhile_step(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "forwhile_step")) return false;
-    if (!nextTokenIs(b, FORWHILE_KW)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, FORWHILE_KW, STEPNAME);
-    r = r && forwhile_step_2(b, l + 1);
-    r = r && forwhile_step_3(b, l + 1);
-    r = r && consumeToken(b, ENDFOR_KW);
-    exit_section_(b, m, FORWHILE_STEP, r);
-    return r;
-  }
-
-  // [multiline_arg]
-  private static boolean forwhile_step_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "forwhile_step_2")) return false;
-    consumeToken(b, MULTILINE_ARG);
-    return true;
-  }
-
-  // [step+]
-  private static boolean forwhile_step_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "forwhile_step_3")) return false;
-    forwhile_step_3_0(b, l + 1);
-    return true;
-  }
-
-  // step+
-  private static boolean forwhile_step_3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "forwhile_step_3_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = step(b, l + 1);
-    int c = current_position_(b);
-    while (r) {
-      if (!step(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "forwhile_step_3_0", c)) break;
-      c = current_position_(b);
-    }
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
   // given_kw stepname [multiline_arg]
   public static boolean given_step(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "given_step")) return false;
@@ -398,7 +356,97 @@ public class FlowlaParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // given_step|then_step|when_step|and_step|but_step|if_step|foreach_step|forwhile_step
+  // repeatefor_kw stepname [multiline_arg] [step+] endrepeat_kw
+  public static boolean repeat_for(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "repeat_for")) return false;
+    if (!nextTokenIs(b, REPEATEFOR_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, REPEATEFOR_KW, STEPNAME);
+    r = r && repeat_for_2(b, l + 1);
+    r = r && repeat_for_3(b, l + 1);
+    r = r && consumeToken(b, ENDREPEAT_KW);
+    exit_section_(b, m, REPEAT_FOR, r);
+    return r;
+  }
+
+  // [multiline_arg]
+  private static boolean repeat_for_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "repeat_for_2")) return false;
+    consumeToken(b, MULTILINE_ARG);
+    return true;
+  }
+
+  // [step+]
+  private static boolean repeat_for_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "repeat_for_3")) return false;
+    repeat_for_3_0(b, l + 1);
+    return true;
+  }
+
+  // step+
+  private static boolean repeat_for_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "repeat_for_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = step(b, l + 1);
+    int c = current_position_(b);
+    while (r) {
+      if (!step(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "repeat_for_3_0", c)) break;
+      c = current_position_(b);
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // repeatwhile_kw stepname [multiline_arg] [step+] endrepeat_kw
+  public static boolean repeat_while(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "repeat_while")) return false;
+    if (!nextTokenIs(b, REPEATWHILE_KW)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, REPEATWHILE_KW, STEPNAME);
+    r = r && repeat_while_2(b, l + 1);
+    r = r && repeat_while_3(b, l + 1);
+    r = r && consumeToken(b, ENDREPEAT_KW);
+    exit_section_(b, m, REPEAT_WHILE, r);
+    return r;
+  }
+
+  // [multiline_arg]
+  private static boolean repeat_while_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "repeat_while_2")) return false;
+    consumeToken(b, MULTILINE_ARG);
+    return true;
+  }
+
+  // [step+]
+  private static boolean repeat_while_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "repeat_while_3")) return false;
+    repeat_while_3_0(b, l + 1);
+    return true;
+  }
+
+  // step+
+  private static boolean repeat_while_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "repeat_while_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = step(b, l + 1);
+    int c = current_position_(b);
+    while (r) {
+      if (!step(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "repeat_while_3_0", c)) break;
+      c = current_position_(b);
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // given_step|then_step|when_step|and_step|but_step|if_step|foreach_step|repeat_for|repeat_while
   public static boolean step(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "step")) return false;
     boolean r;
@@ -410,7 +458,8 @@ public class FlowlaParser implements PsiParser, LightPsiParser {
     if (!r) r = but_step(b, l + 1);
     if (!r) r = if_step(b, l + 1);
     if (!r) r = foreach_step(b, l + 1);
-    if (!r) r = forwhile_step(b, l + 1);
+    if (!r) r = repeat_for(b, l + 1);
+    if (!r) r = repeat_while(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

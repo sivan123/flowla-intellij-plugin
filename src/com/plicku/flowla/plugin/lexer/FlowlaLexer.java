@@ -5,22 +5,17 @@ import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import com.plicku.flowla.plugin.psi.FlowlaTypes;
 
-
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import static com.intellij.psi.CustomHighlighterTokenType.WHITESPACE;
+import static com.plicku.flowla.plugin.lexer.FlowlaLexerUtil.*;
 
 public class FlowlaLexer implements FlexLexer {
 
   private Reader zzReader;
   private int zzLexicalState;
+  private String zzKeywordState;
   private int zzMarkedPos;
   private int zzStartRead;
   private CharSequence zzBuffer;
@@ -31,25 +26,7 @@ public class FlowlaLexer implements FlexLexer {
 
 
 
-  private final static int INITAL_STATE=0;
-  private final static int GIVEN_STATE=1;
-  private final static int THEN_STATE=2;
-  private final static int STEPDATA_STATE=3;
 
-
-  private static Map<Integer,List<Integer>> stateMap = new HashMap<>();
-  private static final String GIVEN_KW="Given ";
-  private static final String THEN_KW="Then ";
-  private static final String IF_KW="If ";
-
-  private static final Pattern keywordPattern = Pattern.compile("(?m)^\\s*(Given |Then |And |For Each |If |Else If)");
-
-
-  static {
-    stateMap.put(INITAL_STATE, Arrays.asList(GIVEN_STATE,THEN_STATE));
-    stateMap.put(GIVEN_STATE, Arrays.asList(STEPDATA_STATE));
-    stateMap.put(THEN_STATE, Arrays.asList(STEPDATA_STATE));
-  }
 
   private boolean zzEOFDone;
 
@@ -91,7 +68,7 @@ public class FlowlaLexer implements FlexLexer {
 
   @Override
   public IElementType advance() throws IOException {
-    System.out.println("Advance called.. zzbuffer"+zzBuffer.length()+ "  currPos "+zzCurrentPos+" end "+zzEndRead );
+    System.out.println("Advance called.. zzbuffer"+zzBuffer.length()+ "  currPos "+zzCurrentPos+" end "+zzEndRead +" zzKeywordState "+zzKeywordState);
     try {
 
       zzStartRead=zzCurrentPos;
@@ -110,47 +87,54 @@ public class FlowlaLexer implements FlexLexer {
         if (zzEndRead == 0) {
           return TokenType.WHITE_SPACE;
         }
-        if (zzLexicalState == INITAL_STATE) {
+        if (zzLexicalState == INITIAL_STATE) {
           if (!startedReadingChars) {
             if (!iswhitespace(zzBuffer.charAt(zzCurrentPos))) {
               startedReadingChars = true;
               zzStartRead = zzCurrentPos;
             }
           } else {
-            if (isSame(zzBuffer.subSequence(zzStartRead, zzCurrentPos), GIVEN_KW)) {
+            StepTokenProperties stepTokenProperties = getStepTokenProperites(zzBuffer.subSequence(zzStartRead, zzCurrentPos).toString());
+            if (stepTokenProperties!=null) {
               zzMarkedPos = zzCurrentPos;
-              zzLexicalState = GIVEN_STATE;
-              returnType = FlowlaTypes.GIVEN_KW;
-              break;
-            } else if (isSame(zzBuffer.subSequence(zzStartRead, zzCurrentPos), THEN_KW)) {
-              zzMarkedPos = zzCurrentPos;
-              zzLexicalState = THEN_STATE;
-              returnType = FlowlaTypes.THEN_KW;
+              zzLexicalState = stepTokenProperties.getLexstate();
+              zzKeywordState = stepTokenProperties.getKeyword();
+              returnType = stepTokenProperties.getTokenType();
               break;
             }
           }
-        } else if (zzLexicalState == GIVEN_STATE || zzLexicalState == THEN_STATE) {
-          if (!startedReadingChars) {
-            if (!iswhitespace(zzBuffer.charAt(zzCurrentPos))) {
-              zzStartRead = zzCurrentPos;
-              startedReadingChars = true;
-            }
-          } else if (zzCurrentPos == zzEndRead || zzBuffer.charAt(zzCurrentPos) == '\n') {
-            zzMarkedPos = zzCurrentPos;
-            //check step data present
-            if (hasStepData())
-              zzLexicalState = STEPDATA_STATE;
-            else
-              zzLexicalState = INITAL_STATE;
+        } else if (zzLexicalState == KEYWORD_STATE) {
+          StepTokenProperties stepTokenProperties= getStepTokenProperites(zzKeywordState);
+          System.out.println("keyword state "+zzKeywordState+" zzLexicalState= "+zzLexicalState+" stepTokenProperties.isKeywordWithStepname() ="+stepTokenProperties.isKeywordWithStepname());
+          if(stepTokenProperties.isKeywordWithStepname()) {
+            if (!startedReadingChars) {
+              if (!iswhitespace(zzBuffer.charAt(zzCurrentPos))) {
+                zzStartRead = zzCurrentPos;
+                startedReadingChars = true;
+              }
+            } else if (zzCurrentPos == zzEndRead || zzBuffer.charAt(zzCurrentPos) == '\n') {
+              zzMarkedPos = zzCurrentPos;
+              //check step data present
+              if (stepTokenProperties.isStepDataPossible() && hasStepData())
+                zzLexicalState = STEP_DATA_STATE;
+              else
+                zzLexicalState = INITIAL_STATE;
 
-            returnType = FlowlaTypes.STEPNAME;
-            break;
+              returnType = FlowlaTypes.STEPNAME;
+              break;
+            }
+          } else {
+              zzLexicalState = INITIAL_STATE;
+              zzKeywordState = null;
+              zzCurrentPos--;
           }
-        } else if (zzLexicalState == STEPDATA_STATE) {
+
+        } else if (zzLexicalState == STEP_DATA_STATE) {
           if (!iswhitespace(zzBuffer.charAt(zzCurrentPos))) {
             zzStartRead = zzCurrentPos;
             zzCurrentPos = zzMarkedPos = endIndexOfStepData();
-            zzLexicalState = INITAL_STATE;
+            zzLexicalState = INITIAL_STATE;
+            zzKeywordState = null;
             returnType = FlowlaTypes.MULTILINE_ARG;
             break;
           }
@@ -164,6 +148,8 @@ public class FlowlaLexer implements FlexLexer {
 
       }
 
+      if(isWhiteSpace(yytext()))
+        returnType = TokenType.WHITE_SPACE;
 
       System.out.println("zzStartRead = "+zzStartRead+" zzMarkedPos = "+ zzMarkedPos);
       System.out.println("Returning type " + returnType + " Token " + yytext());
@@ -200,22 +186,6 @@ public class FlowlaLexer implements FlexLexer {
     }
   }
 
-  private static boolean isSame(CharSequence s, CharSequence t) {
-    int i = 0;
-
-    while (i < s.length() && i < t.length()) {
-      char a = s.charAt(i);
-      char b = t.charAt(i);
-
-      int diff = a - b;
-
-      if (diff != 0) {
-        return false;
-      }
-      i++;
-    }
-    return s.length() - t.length() == 0;
-  }
 
   private boolean iswhitespace(Character c)
   {

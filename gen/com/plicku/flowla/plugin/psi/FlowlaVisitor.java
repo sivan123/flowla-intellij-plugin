@@ -23,10 +23,6 @@ public class FlowlaVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitForwhileStep(@NotNull FlowlaForwhileStep o) {
-    visitPsiElement(o);
-  }
-
   public void visitGivenStep(@NotNull FlowlaGivenStep o) {
     visitPsiElement(o);
   }
@@ -36,6 +32,14 @@ public class FlowlaVisitor extends PsiElementVisitor {
   }
 
   public void visitOtherwiseStep(@NotNull FlowlaOtherwiseStep o) {
+    visitPsiElement(o);
+  }
+
+  public void visitRepeatFor(@NotNull FlowlaRepeatFor o) {
+    visitPsiElement(o);
+  }
+
+  public void visitRepeatWhile(@NotNull FlowlaRepeatWhile o) {
     visitPsiElement(o);
   }
 

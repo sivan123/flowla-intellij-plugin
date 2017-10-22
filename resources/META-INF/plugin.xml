@@ -29,6 +29,7 @@
     <fileTypeFactory implementation="com.plicku.flowla.plugin.FlowlaFileTypeFactory"/>
     <lang.parserDefinition language="Flowla" implementationClass="com.plicku.flowla.plugin.FlowlaParserDefinition"/>
     <lang.syntaxHighlighterFactory language="Flowla" implementationClass="com.plicku.flowla.plugin.FlowlaSyntaxHighlighterFactory"></lang.syntaxHighlighterFactory>
+    <completion.contributor language="Flowla" implementationClass="com.plicku.flowla.plugin.KeyWordCompletionContributor"></completion.contributor>
   </extensions>
 
   <actions>
